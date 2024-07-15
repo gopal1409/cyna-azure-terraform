@@ -42,8 +42,8 @@ resource "azurerm_lb_probe" "web_lb_probe" {
 resource "azurerm_lb_rule" "web_rule" {
   name                = "${local.resoure_name_prefix}-rule"
   protocol = "Tcp"
-  frontend = 80
-  backend = 80
+  frontend_port = 80
+  backend_port = 80
   frontend_ip_configuration = azurerm_lb.web_lb.frontend_ip_configuration[0].name 
   backend_address_pool_ids = [azurerm_lb_backend_address_pool.web_lb_pool.id]
   probe_id = azurerm_lb_probe.web_lb_probe.id 
