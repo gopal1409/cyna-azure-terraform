@@ -39,7 +39,7 @@ resource "azurerm_lb_probe" "web_lb_probe" {
 }
 
 #but i need to definet he rule how the probe is going to work
-resource "azure_lb_rule" "web_rule" {
+resource "azurerm_lb_rule" "web_rule" {
   name                = "${local.resoure_name_prefix}-rule"
   protocol = "Tcp"
   frontend = 80
