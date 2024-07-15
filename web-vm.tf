@@ -25,5 +25,5 @@ resource "azurerm_linux_virtual_machine" "linuxvm" {
     sku       = "22_04-lts"
     version   = "latest"
   }
-  custom_data = filebase64("{path.module}/app/app.sh")
+  custom_data = filebase64("${path.module}/app/app.sh")
 }
