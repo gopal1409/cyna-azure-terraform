@@ -49,3 +49,10 @@ resource "azurerm_lb_rule" "web_rule" {
   probe_id = azurerm_lb_probe.web_lb_probe.id 
   loadbalancer_id = azurerm_lb.web_lb.id 
 }
+
+resource "azurerm_network_interface_backend_address_pool_association" "web_lb_associate" {
+  for_each = var.web_linux_instance_count
+  network_interface_id = azurerm_network_interface.web_linux_nic[each.key].id 
+  ip_configuration_name = azurerm_network_interface.web_linux_nic[each.key].ip_configuration[0].name 
+  backend_address_pool_id = azurerm_lb_backend_address_pool.web_lb_pool.id 
+}
