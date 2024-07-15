@@ -22,3 +22,30 @@ resource "azurerm_lb" "web_lb" {
   }
 }
 
+##backendpool
+resource "azurerm_lb_backend_address_pool" "web_lb_pool" {
+  name                = "${local.resoure_name_prefix}-backendpool"
+  loadbalancer_id = azurerm_lb.web_lb.id 
+}
+
+#probe
+resource "azurerm_lb_probe" "web_lb_probe" {
+   name                = "${local.resoure_name_prefix}-weblbprobe"
+   protocol = "Tcp"
+   port = "80"
+   loadbalancer_id = azurerm_lb.web_lb.id 
+   interval_in_seconds = 15
+   number_of_probes = 4 
+}
+
+#but i need to definet he rule how the probe is going to work
+resource "azure_lb_rule" "web_rule" {
+  name                = "${local.resoure_name_prefix}-rule"
+  protocol = "Tcp"
+  frontend = 80
+  backend = 80
+  frontend_ip_configuration = azurerm_lb.web_lb.frontend_ip_configuration[0].name 
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.web_lb_pool.id]
+  probe_id = azurerm_lb_probe.web_lb_probe.id 
+  loadbalancer_id = azurerm_lb.web_lb.id 
+}
